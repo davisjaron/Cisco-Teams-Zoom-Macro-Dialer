@@ -53,16 +53,6 @@ Before using the Teams dialer, you must configure your organization's Teams SIP 
   - With passcode: `[meetingID].[passcode]@zoomcrc.com`
   - Without passcode: `[meetingID]@zoomcrc.com`
 
-## Compatibility
-
-Tested on:
-- Cisco DX70
-- (Add other tested devices here)
-
-## Contributing
-
-Feel free to submit issues and pull requests to improve the functionality.
-
 ## License
 
 [Add your chosen license here] 
