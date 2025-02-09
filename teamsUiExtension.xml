@@ -1,0 +1,13 @@
+<Extensions>
+    <Version>1.7</Version>
+    <Panel>
+        <Order>1</Order>
+        <PanelId>teams_speed_dial</PanelId>
+        <Origin>local</Origin>
+        <Type>Home</Type>
+        <Icon>Camera</Icon>
+        <Color>Purple</Color>
+        <Name>Teams Speed Dial</Name>
+        <ActivityType>Custom</ActivityType>
+    </Panel>
+</Extensions> 
