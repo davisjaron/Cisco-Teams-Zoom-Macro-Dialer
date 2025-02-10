@@ -41,12 +41,16 @@ function showPasscodeDialog() {
     });
 }
 
-// Listen for text input response
-xapi.Event.UserInterface.Message.TextInput.Response.on(onTextInput);
+module.exports = {
+    init: () => {
+        // Listen for text input response
+        xapi.Event.UserInterface.Message.TextInput.Response.on(onTextInput);
 
-// Listen for panel opening
-xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
-    if (event.PanelId === 'zoom_speed_dial') {
-        showMeetingDialog();
+        // Listen for panel opening
+        xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
+            if (event.PanelId === 'zoom_speed_dial') {
+                showMeetingDialog();
+            }
+        });
     }
-}); 
+}; 
