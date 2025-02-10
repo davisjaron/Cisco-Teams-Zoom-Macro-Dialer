@@ -1,4 +1,4 @@
-import xapi from 'xapi';
+const xapi = require('xapi');
 
 // IMPORTANT: Change this to your organization's Teams SIP domain
 // This is the domain used in your Teams video conferencing dial string
@@ -13,13 +13,13 @@ function onTextInput(event) {
         const videoID = event.Text;
         const dialString = `${videoID}${TEAMS_SIP_DOMAIN}`;
         
-        xapi.Command.Dial({ Number: dialString, CallType: 'Video' });
+        xapi.command('Dial', { Number: dialString });
     }
 }
 
 // Show the text input dialog immediately when the panel opens
 function showTeamsDialog() {
-    xapi.Command.UserInterface.Message.TextInput.Display({
+    xapi.command('UserInterface.Message.TextInput.Display', {
         Title: 'Enter Teams Video ID',
         Text: 'Enter your Microsoft Teams Video ID (not the meeting ID):',
         InputType: 'Numeric',
@@ -28,16 +28,13 @@ function showTeamsDialog() {
     });
 }
 
-module.exports = {
-    init: () => {
-        // Listen for text input response
-        xapi.Event.UserInterface.Message.TextInput.Response.on(onTextInput);
+function init() {
+    xapi.event.on('UserInterface.Message.TextInput.Response', onTextInput);
+    xapi.event.on('UserInterface.Extensions.Panel.Clicked', (event) => {
+        if (event.PanelId === 'teams_speed_dial') {
+            showTeamsDialog();
+        }
+    });
+}
 
-        // Listen for panel opening
-        xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
-            if (event.PanelId === 'teams_speed_dial') {
-                showTeamsDialog();
-            }
-        });
-    }
-}; 
+init(); 
