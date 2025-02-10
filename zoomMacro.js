@@ -1,4 +1,4 @@
-import xapi from 'xapi';
+const xapi = require('xapi');
 
 let meetingID = '';
 
@@ -16,13 +16,13 @@ function onTextInput(event) {
             `${meetingID}.${passcode}@zoomcrc.com` : 
             `${meetingID}@zoomcrc.com`;
         
-        xapi.Command.Dial({ Number: dialString, CallType: 'Video' });
+        xapi.command('Dial', { Number: dialString });
         meetingID = ''; // Reset the meeting ID
     }
 }
 
 function showMeetingDialog() {
-    xapi.Command.UserInterface.Message.TextInput.Display({
+    xapi.command('UserInterface.Message.TextInput.Display', {
         Title: 'Enter Zoom Meeting ID',
         Text: 'Enter your Zoom Meeting ID:',
         InputType: 'Numeric',
@@ -32,7 +32,7 @@ function showMeetingDialog() {
 }
 
 function showPasscodeDialog() {
-    xapi.Command.UserInterface.Message.TextInput.Display({
+    xapi.command('UserInterface.Message.TextInput.Display', {
         Title: 'Enter Zoom Passcode (Optional)',
         Text: 'Enter your Zoom Meeting Passcode if required:',
         InputType: 'Numeric',
@@ -41,16 +41,13 @@ function showPasscodeDialog() {
     });
 }
 
-module.exports = {
-    init: () => {
-        // Listen for text input response
-        xapi.Event.UserInterface.Message.TextInput.Response.on(onTextInput);
+function init() {
+    xapi.event.on('UserInterface.Message.TextInput.Response', onTextInput);
+    xapi.event.on('UserInterface.Extensions.Panel.Clicked', (event) => {
+        if (event.PanelId === 'zoom_speed_dial') {
+            showMeetingDialog();
+        }
+    });
+}
 
-        // Listen for panel opening
-        xapi.Event.UserInterface.Extensions.Panel.Clicked.on((event) => {
-            if (event.PanelId === 'zoom_speed_dial') {
-                showMeetingDialog();
-            }
-        });
-    }
-}; 
+init(); 
